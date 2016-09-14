@@ -1,0 +1,22 @@
+{
+  "name": "react-native-go",
+  "version": "1.0.0",
+  "description": "the react-native project framework",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tielan/react-native-go.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "futielan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tielan/react-native-go/issues"
+  },
+  "homepage": "https://github.com/tielan/react-native-go#readme"
+}

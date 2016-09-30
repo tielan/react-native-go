@@ -1,3 +1,6 @@
-# react-native-go
-react-native-go
-## npm install react-native-go --save 
+# react-native-fileupload 
+
+# Getting started
+```
+npm install react-native-go --save
+```

@@ -6,9 +6,10 @@
 3.在代码中添加<br/>
 import { Iconfont } from 'react-native-go';<br/>
 <br/>
-<Iconfont<br/>
-    fontFamily={'iconfont'}<br/>
-    icon='&#xe603;'<br/>
-    iconColor='#fff'<br/>
-    iconSize ={22}<br/>
+##代码
+<Iconfont   
+    fontFamily={'iconfont'}
+    icon='&#xe603;'
+    iconColor='#fff'
+    iconSize ={22}
     />

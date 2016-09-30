@@ -1,6 +1,6 @@
 {
   "name": "react-native-go",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "the react-native project framework",
   "main": "lib/index.js",
   "scripts": {

@@ -1,4 +1,4 @@
-# react-native-fileupload 
+# react-native-go 
 
 # Getting started
 ```

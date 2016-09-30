@@ -6,6 +6,7 @@
 3.在代码中添加<br/>
 <br/>
 ###代码
+{% highlight html linenos %}
 
 import { Iconfont } from 'react-native-go';
 <Iconfont   
@@ -14,3 +15,6 @@ import { Iconfont } from 'react-native-go';
     iconColor='#fff'
     iconSize ={22}
     />
+    
+{% endhighlight %}
+

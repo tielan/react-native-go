@@ -1,4 +1,4 @@
-# react-native-go 
+# react-native-go master
 
 # Getting started
 ```

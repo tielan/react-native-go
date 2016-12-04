@@ -9,23 +9,43 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableHighlight
 } from 'react-native';
 
+import { FetchManger }  from 'react-native-go';
+
 export default class goexamles extends Component {
+  constructor(props) {
+    super(props);
+    this.onFetchAction = this.onFetchAction.bind(this);
+    FetchManger.initConfig({baseUrl:'http://www.weather.com.cn/data/cityinfo/'});
+    this.state = {
+      message: ''
+    }
+  }
+  //http://www.weather.com.cn/data/cityinfo/101010100.html
+  onFetchAction() {
+    this.setState({ message: 'loading' })
+    debugger;
+    FetchManger.get('101010100.html').then((responseData,cached) => {
+      this.setState({ message: JSON.stringify(responseData) +''+ cached})
+    }).catch((error) => {
+      this.setState({ message:error })
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
+        <TouchableHighlight
+          onPress={this.onFetchAction}
+          underlayColor={'#999'}
+          style={{ height: 48, alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 16, color: 'red', fontWeight: '300', }}>登        录</Text>
+        </TouchableHighlight>
+        <View style={{ flex: 1 }} />
+        <Text style={{ fontSize: 16, color: 'red' }}>{this.state.message}</Text>
       </View>
     );
   }
@@ -36,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
   welcome: {
     fontSize: 20,

@@ -27,9 +27,8 @@ export default class goexamles extends Component {
   //http://www.weather.com.cn/data/cityinfo/101010100.html
   onFetchAction() {
     this.setState({ message: 'loading' })
-    debugger;
-    FetchManger.get('101010100.html').then((responseData,cached) => {
-      this.setState({ message: JSON.stringify(responseData) +''+ cached})
+    FetchManger.getUri('101010100.html').then((responseData) => {
+      this.setState({ message: JSON.stringify(responseData)})
     }).catch((error) => {
       this.setState({ message:error })
     })

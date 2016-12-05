@@ -21,7 +21,7 @@ export default class App extends Component {
     this.onFetchAction = this.onFetchAction.bind(this);
     this.ontoastAction = this.ontoastAction.bind(this);
     this.onspinnerAction = this.onspinnerAction.bind(this);
-    FetchManger.initConfig({ baseUrl: 'http://www.weather.com.cn/data/cityinfo/' });
+    FetchManger.initConfig({ baseUrl: 'http://222.240.214.122:18000/mobile_interfaces/mobile_info/' });
     this.state = {
       message: '',
       showSpinner:false,
@@ -30,9 +30,9 @@ export default class App extends Component {
   //http://www.weather.com.cn/data/cityinfo/101010100.html
   onFetchAction() {
     this.setState({ message: 'loading' })
-    FetchManger.getUri('101010100.html', {}, -1).then((responseData) => {
+    debugger;
+    FetchManger.postUri('personalLogin.do', {user_name:'唐平安',user_password:'111111'}).then((responseData) => {
       this.setState({ message: JSON.stringify(responseData) })
-
     }).catch((error) => {
       this.setState({ message: error })
     })

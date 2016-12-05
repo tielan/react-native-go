@@ -53,12 +53,30 @@ export function get(reqUrl, params = {}, expiry) {
 }
 
 
-export function postUri(uri, params = {}, expiry) {
-    return post(config.baseUrl + uri, params, expiry);
+export function postUri(uri, params = {}) {
+    return post(config.baseUrl + uri, params);
 }
 
-export function post(reqUrl, params = {}, expiry) {
-    return fetchJSON(reqUrl, { method: 'POST', headers: config.headers, body: JSON.stringify(params), credentials: config.credentials });
+export function post(reqUrl, params = {}) {
+    let formData = new FormData();
+    for (var key in params) {
+        if (typeof (params[key]) == "function")
+            continue;
+        formData.append(key, params[key]);
+    }
+     debugger;
+    return fetchJSON(reqUrl, { method: 'POST', headers: config.headers, body: formData, credentials: config.credentials });
+}
+
+export function upload(reqUrl, filename, params = {}) {
+    let formData = new FormData();
+    let file = { uri: uri, type: 'multipart/form-data', name: filename };
+    for (var key in params) {
+        if (typeof (params[key]) == "function")
+            continue;
+        formData.append(key, params[key]);
+    }
+    return fetchJSON(reqUrl, { method: 'POST', headers: Object.assign({}, config.headers, { 'Content-Type': 'multipart/form-data' }), body: formData, credentials: config.credentials });
 }
 
 
@@ -75,7 +93,7 @@ export function fetchJSON(url, options) {
                 if (age < expiry) {
                     return Promise.resolve(getItem(cacheKey)).then((cached) => {
                         if (cached) {
-                           console.log('cached Data:' + url);
+                            console.log('cached Data:' + url);
                             return JSON.parse(cached);
                         } else {
                             return fetchAction(url, options, cacheKey);
@@ -132,7 +150,18 @@ function fetchAction(url, options, cacheKey) {
             });
     });
 }
+function toQueryString(obj) {
+    return obj ? Object.keys(obj).sort().map(function (key) {
+        var val = obj[key];
+        if (Array.isArray(val)) {
+            return val.sort().map(function (val2) {
+                return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
+            }).join('&');
+        }
 
+        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+    }).join('&') : '';
+}
 //设置缓存
 function setItem(key, value) {
     AsyncStorage.setItem(key, value, () => {

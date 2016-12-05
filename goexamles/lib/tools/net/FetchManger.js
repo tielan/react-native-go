@@ -22,6 +22,7 @@ const defaultConfig = {
     credentials: 'same-origin',
     expiry: 5 * 60,
 };
+
 let config = defaultConfig;
 
 export function initConfig(_config) {
@@ -73,6 +74,7 @@ export function fetchJSON(url, options) {
                 if (age < expiry) {
                     return Promise.resolve(getItem(cacheKey)).then((cached) => {
                         if (cached) {
+                           console.log('cached Data:' + url);
                             return JSON.parse(cached);
                         } else {
                             return fetchAction(cacheKey, url, options);

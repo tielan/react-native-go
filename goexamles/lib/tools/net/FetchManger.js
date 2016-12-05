@@ -9,6 +9,7 @@ integrity - subresource完整性值（integrity value）
 cache - 设置cache模式（default, reload, no-cache）
 */
 
+
 import { AsyncStorage } from 'react-native';
 
 const defaultConfig = {
@@ -57,7 +58,7 @@ export function postUri(uri, params = {}, expiry) {
 }
 
 export function post(reqUrl, params = {}, expiry) {
-    return fetchJSON(reqUrl, { method: 'POST', headers: config.headers, body: JSON.stringify(params), credentials: config.credentials, expiry: expiry });
+    return fetchJSON(reqUrl, { method: 'POST', headers: config.headers, body: JSON.stringify(params), credentials: config.credentials });
 }
 
 
@@ -77,7 +78,7 @@ export function fetchJSON(url, options) {
                            console.log('cached Data:' + url);
                             return JSON.parse(cached);
                         } else {
-                            return fetchAction(cacheKey, url, options);
+                            return fetchAction(url, options, cacheKey);
                         }
                     });
                 } else {
@@ -85,16 +86,15 @@ export function fetchJSON(url, options) {
                     removeItem(cacheKey + ':ts')
                 }
             }
-            return fetchAction(cacheKey, url, options);
+            return fetchAction(url, options, cacheKey);
         });
-    }
-    else {
-        return fetchAction(cacheKey, url, options);
+    } else {
+        return fetchAction(url, options);
     }
 }
 
 //http 请求
-function fetchAction(cacheKey, url, options) {
+function fetchAction(url, options, cacheKey) {
     let ok
     return new Promise((resolve, reject) => {
         console.log('fetch Data:' + url);
@@ -112,8 +112,10 @@ function fetchAction(cacheKey, url, options) {
                 let jsonData = responseData;
                 try {
                     jsonData = JSON.parse(responseData);
-                    setItem(cacheKey, responseData);
-                    setItem(cacheKey + ':ts', Date.now() + '');
+                    if (cacheKey) {
+                        setItem(cacheKey, responseData);
+                        setItem(cacheKey + ':ts', Date.now() + '');
+                    }
                     isOk = true;
                 } catch (e) {
                     isOk = false;

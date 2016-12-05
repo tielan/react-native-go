@@ -11,7 +11,7 @@
 import { Iconfont } from 'react-native-go';
 <Iconfont   
     fontFamily={'iconfont'}
-    icon='&#xe603;'
+    icon='e603;'
     iconColor='#fff'
     iconSize ={22}
     />

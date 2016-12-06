@@ -17,7 +17,7 @@ const defaultConfig = {
     Dbug: true,
     headers: {
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;',
-        'Content-Type': 'text/html;charset=GBK',
+        'Content-Type': 'application/json;charset=UTF-8',
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.89 Safari/537.36',
     },
     credentials: 'same-origin',
@@ -64,7 +64,6 @@ export function post(reqUrl, params = {}) {
             continue;
         formData.append(key, params[key]);
     }
-     debugger;
     return fetchJSON(reqUrl, { method: 'POST', headers: config.headers, body: formData, credentials: config.credentials });
 }
 
@@ -76,7 +75,8 @@ export function upload(reqUrl, filename, params = {}) {
             continue;
         formData.append(key, params[key]);
     }
-    return fetchJSON(reqUrl, { method: 'POST', headers: Object.assign({}, config.headers, { 'Content-Type': 'multipart/form-data' }), body: formData, credentials: config.credentials });
+    let headers = Object.assign({},config.headers,{'Content-Type':'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'});
+    return fetchJSON(reqUrl, { method: 'POST', headers, body: formData, credentials: config.credentials });
 }
 
 

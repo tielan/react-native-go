@@ -20,7 +20,7 @@ const defaultConfig = {
         'Content-Type': 'application/json;charset=UTF-8',
         'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.89 Safari/537.36',
     },
-    credentials: 'same-origin',
+    credentials: 'include',
     expiry: 5 * 60,
 };
 
@@ -49,7 +49,7 @@ export function get(reqUrl, params = {}, expiry) {
     } else {
         url = reqUrl + '&' + paramsStr;
     }
-    return fetchJSON(url, { method: 'GET', headers: config.headers, credentials: config.credentials, expiry: expiry });
+    return fetchJSON(url, { method: 'GET', credentials: config.credentials, expiry: expiry });
 }
 
 
@@ -58,13 +58,7 @@ export function postUri(uri, params = {}) {
 }
 
 export function post(reqUrl, params = {}) {
-    let formData = new FormData();
-    for (var key in params) {
-        if (typeof (params[key]) == "function")
-            continue;
-        formData.append(key, params[key]);
-    }
-    return fetchJSON(reqUrl, { method: 'POST', headers: config.headers, body: formData, credentials: config.credentials });
+    return fetchJSON(reqUrl, { method: 'POST', body: toQueryString(params), credentials: config.credentials });
 }
 
 export function upload(reqUrl, filename, params = {}) {
@@ -75,7 +69,7 @@ export function upload(reqUrl, filename, params = {}) {
             continue;
         formData.append(key, params[key]);
     }
-    let headers = Object.assign({},config.headers,{'Content-Type':'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d'});
+    let headers = Object.assign({}, config.headers, { 'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d' });
     return fetchJSON(reqUrl, { method: 'POST', headers, body: formData, credentials: config.credentials });
 }
 
@@ -86,14 +80,13 @@ export function fetchJSON(url, options) {
     // Use the URL as the cache key to sessionStorage
     let cacheKey = url
     if ('GET' === options.method) {
-        console.log(url)
         return Promise.resolve(getItem(cacheKey + ':ts')).then((whenCached) => {
             if (whenCached) {
                 let age = (Date.now() - parseInt(whenCached)) / 1000
                 if (age < expiry) {
                     return Promise.resolve(getItem(cacheKey)).then((cached) => {
                         if (cached) {
-                            console.log('cached Data:' + url);
+                            L('cached Data-->' + cached);
                             return JSON.parse(cached);
                         } else {
                             return fetchAction(url, options, cacheKey);
@@ -115,7 +108,7 @@ export function fetchJSON(url, options) {
 function fetchAction(url, options, cacheKey) {
     let ok
     return new Promise((resolve, reject) => {
-        console.log('fetch Data:' + url);
+        L('fetchAction-->' + url);
         return fetch(url, options)
             .then(
             (response) => {
@@ -127,6 +120,7 @@ function fetchAction(url, options, cacheKey) {
                 return response.text();
             })
             .then((responseData) => {
+                L('responseData-->' + responseData);
                 let jsonData = responseData;
                 try {
                     jsonData = JSON.parse(responseData);
@@ -141,11 +135,12 @@ function fetchAction(url, options, cacheKey) {
                 if (isOk) {
                     resolve(jsonData)
                 } else {
+                    L('fetchAction-->服务器数据格式错误！');
                     reject('服务器数据格式错误！')
                 }
             }).catch(
             (error) => {
-                console.log(error);
+                L('fetchAction-->' + error);
                 return reject('网络错误！');
             });
     });
@@ -158,14 +153,13 @@ function toQueryString(obj) {
                 return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
             }).join('&');
         }
-
         return encodeURIComponent(key) + '=' + encodeURIComponent(val);
     }).join('&') : '';
 }
 //设置缓存
 function setItem(key, value) {
     AsyncStorage.setItem(key, value, () => {
-        console.log('setItem [' + key + '] success');
+        L('setItem [' + key + '] success');
     });
 }
 //获取缓存
@@ -175,6 +169,12 @@ function getItem(key, callBack) {
 //从缓存中移除
 function removeItem(key) {
     AsyncStorage.removeItem(key, () => {
-        console.log('remove [' + key + '] success');
+        L('remove [' + key + '] success');
     });
+}
+
+function L(message) {
+    if (config.Dbug) {
+        console.log(message);
+    }
 }

@@ -49,7 +49,7 @@ export function get(reqUrl, params = {}, expiry) {
     } else {
         url = reqUrl + '&' + paramsStr;
     }
-    return fetchJSON(url, { method: 'GET', credentials: config.credentials, expiry: expiry });
+    return fetchJSON(url, { method: 'GET', headers: config.headers, credentials: config.credentials, expiry: expiry });
 }
 
 
@@ -58,7 +58,8 @@ export function postUri(uri, params = {}) {
 }
 
 export function post(reqUrl, params = {}) {
-    return fetchJSON(reqUrl, { method: 'POST', body: toQueryString(params), credentials: config.credentials });
+    let headers = Object.assign({}, config.headers, { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' });
+    return fetchJSON(reqUrl, { method: 'POST', headers: headers, body: toQueryString(params), credentials: config.credentials });
 }
 
 export function upload(reqUrl, filename, params = {}) {
@@ -70,7 +71,7 @@ export function upload(reqUrl, filename, params = {}) {
         formData.append(key, params[key]);
     }
     let headers = Object.assign({}, config.headers, { 'Content-Type': 'multipart/form-data; boundary=6ff46e0b6b5148d984f148b6542e5a5d' });
-    return fetchJSON(reqUrl, { method: 'POST', headers, body: formData, credentials: config.credentials });
+    return fetchJSON(reqUrl, { method: 'POST', headers: headers, body: formData, credentials: config.credentials });
 }
 
 
@@ -79,6 +80,7 @@ export function fetchJSON(url, options) {
     let expiry = options.expiry || config.expiry // 5 min default
     // Use the URL as the cache key to sessionStorage
     let cacheKey = url
+    L('fetchJSON-->'+url, JSON.stringify(options));
     if ('GET' === options.method) {
         return Promise.resolve(getItem(cacheKey + ':ts')).then((whenCached) => {
             if (whenCached) {
@@ -86,7 +88,7 @@ export function fetchJSON(url, options) {
                 if (age < expiry) {
                     return Promise.resolve(getItem(cacheKey)).then((cached) => {
                         if (cached) {
-                            L('cached Data-->' + cached);
+                            L('cached Data', cached);
                             return JSON.parse(cached);
                         } else {
                             return fetchAction(url, options, cacheKey);
@@ -108,10 +110,10 @@ export function fetchJSON(url, options) {
 function fetchAction(url, options, cacheKey) {
     let ok
     return new Promise((resolve, reject) => {
-        L('fetchAction-->' + url);
         return fetch(url, options)
             .then(
             (response) => {
+                L('response', JSON.stringify(response));
                 if (response.ok) {
                     isOK = true;
                 } else {
@@ -120,7 +122,7 @@ function fetchAction(url, options, cacheKey) {
                 return response.text();
             })
             .then((responseData) => {
-                L('responseData-->' + responseData);
+                L('responseData', responseData);
                 let jsonData = responseData;
                 try {
                     jsonData = JSON.parse(responseData);
@@ -135,12 +137,12 @@ function fetchAction(url, options, cacheKey) {
                 if (isOk) {
                     resolve(jsonData)
                 } else {
-                    L('fetchAction-->服务器数据格式错误！');
+                    L('fetchAction', '服务器数据格式错误！');
                     reject('服务器数据格式错误！')
                 }
             }).catch(
             (error) => {
-                L('fetchAction-->' + error);
+                L('fetchAction', error);
                 return reject('网络错误！');
             });
     });
@@ -159,7 +161,7 @@ function toQueryString(obj) {
 //设置缓存
 function setItem(key, value) {
     AsyncStorage.setItem(key, value, () => {
-        L('setItem [' + key + '] success');
+        L('setItem', 'setItem [' + key + '] success');
     });
 }
 //获取缓存
@@ -169,12 +171,29 @@ function getItem(key, callBack) {
 //从缓存中移除
 function removeItem(key) {
     AsyncStorage.removeItem(key, () => {
-        L('remove [' + key + '] success');
+        L('removeItem', 'remove [' + key + '] success');
     });
 }
 
-function L(message) {
+function L(tag, message) {
     if (config.Dbug) {
-        console.log(message);
+        console.log(getNowFormatDate() + '-->' + tag);
+        console.log('         '+message);
     }
+}
+function getNowFormatDate() {
+    var date = new Date();
+    var seperator1 = "-";
+    var seperator2 = ":";
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = date.getHours() + seperator2 + date.getMinutes()
+        + seperator2 + date.getSeconds();
+    return currentdate;
 }

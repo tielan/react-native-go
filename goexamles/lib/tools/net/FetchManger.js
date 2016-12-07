@@ -49,7 +49,7 @@ export function get(reqUrl, params = {}, expiry) {
     } else {
         url = reqUrl + '&' + paramsStr;
     }
-    return fetchJSON(url, { method: 'GET', headers: config.headers, credentials: config.credentials, expiry: expiry });
+    return fetchJSON(url, { method: 'GET', credentials: config.credentials, expiry: expiry });
 }
 
 

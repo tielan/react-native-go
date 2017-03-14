@@ -2,7 +2,7 @@
     "name": "react-native-go",
     "version": "1.8.1",
     "description": "the react-native project framework",
-    "main": "example/lib/index.js",
+    "main": "lib/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },

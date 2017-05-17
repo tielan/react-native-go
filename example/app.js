@@ -13,9 +13,9 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-import { FetchManger, Toast, LineView,Spinner } from './lib/index';
+import { FetchManger, Toast, LineView,Spinner } from 'react-native-go';
 let count = 0
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.onFetchAction = this.onFetchAction.bind(this);
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
-
+export default App;

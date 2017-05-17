@@ -10,3 +10,5 @@
 npm install react-native-go --save
 
 ```
+## V1.8.6 2017年5月17号
+1.更新到 RN 0.44.0

@@ -1,6 +1,3 @@
-/**
- * react-native-root-toast
- */
 import React, {
     Component,
     PropTypes
@@ -8,7 +5,7 @@ import React, {
 import {
     View
 } from 'react-native';
-import RootSiblings from './SiblingsManager';
+import RootSiblings from 'react-native-root-siblings';
 import ToastContainer, {positions, durations} from './ToastContainer';
 
 class Toast extends Component {

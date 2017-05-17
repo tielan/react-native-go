@@ -1,6 +1,3 @@
-/**
- * react-native-root-siblings
- */
 import React, { cloneElement } from 'react';
 import { StyleSheet } from 'react-native';
 import emitter from './AppRegistryInjection';
@@ -24,7 +21,7 @@ export default class {
         this.update(element, callback);
     };
 
-    _offstreamElement(element) {
+    _offStreamElement(element) {
         return cloneElement(element, {
             style: [element.props.style, styles.offStream]
         });
@@ -33,7 +30,7 @@ export default class {
     _id = null;
 
     update(element, callback) {
-        emitter.emit('siblings.update', this._id, this._offstreamElement(element), callback);
+        emitter.emit('siblings.update', this._id, this._offStreamElement(element), callback);
     };
 
     destroy(callback) {

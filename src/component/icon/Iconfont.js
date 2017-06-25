@@ -95,7 +95,7 @@ Iconfont.propTypes = {
 
 //默认属性
 Iconfont.defaultProps = {
-  fontFamily: 'iconfont',
+  fontFamily: 'OAIndexIcon',
   iconColor: '#fff',
   position: 'right',
   iconSize: 20,

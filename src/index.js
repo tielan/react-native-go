@@ -26,6 +26,6 @@ import LineView from './views/LineView';
  */
 import Toast from './views/toast/Toast';
 import Spinner from './views/Spinner'
+import LoadingView from './views/LoadingView'
 
-
-export { LineView,Toast,Spinner }; 
+export { LineView,Toast,Spinner,LoadingView}; 

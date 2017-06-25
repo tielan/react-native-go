@@ -1,10 +1,8 @@
 import Storage from './Storage'
 
 const userinfoKey = 'userinfoKey';
-
+const UserInfo = {};
 class LoginInfo {
-
-    static UserInfo = {}; 
     //返回用户基本信息
     static getUserInfo() {
         return UserInfo;

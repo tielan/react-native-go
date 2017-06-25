@@ -3,10 +3,12 @@ import React, {
     PropTypes
 } from 'react';
 import {
-    View
+    View,
+    ToastAndroid,
+    Platform
 } from 'react-native';
-import RootSiblings from 'react-native-root-siblings';
-import ToastContainer, {positions, durations} from './ToastContainer';
+import RootSiblings from './SiblingsManager';
+import ToastContainer, { positions, durations } from './ToastContainer';
 
 class Toast extends Component {
     static displayName = 'Toast';
@@ -14,13 +16,18 @@ class Toast extends Component {
     static positions = positions;
     static durations = durations;
 
-    static show = (message, options = {position: positions.BOTTOM, duration: durations.SHORT}) => {
-        return new RootSiblings(<ToastContainer
-            {...options}
-            visible={true}
-        >
-            {message}
-        </ToastContainer>);
+    static show = (message, options = { position: positions.BOTTOM, duration: durations.SHORT }) => {
+        if (Platform.OS === 'android') {
+            return ToastAndroid.show(message, durations === durations.SHORT ? ToastAndroid.SHORT : ToastAndroid.LONG)
+        } else {
+            return new RootSiblings(<ToastContainer
+                {...options}
+                visible={true}
+            >
+                {message}
+            </ToastContainer>);
+        }
+
     };
 
     static hide = toast => {

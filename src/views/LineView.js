@@ -5,11 +5,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-const propTypes = {
-    height: PropTypes.number,
-    width: PropTypes.number,
-    bgColor: PropTypes.string,
-};
+
 
 class LineView extends React.Component {
 

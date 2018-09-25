@@ -1,6 +1,5 @@
 import React, {
     Component,
-    PropTypes
 } from 'react';
 import {
     StyleSheet,
@@ -67,26 +66,7 @@ let styles = StyleSheet.create({
 class ToastContainer extends Component {
     static displayName = 'ToastContainer';
 
-    static propTypes = {
-        ...View.propTypes,
-        containerStyle: View.propTypes.style,
-        duration: PropTypes.number,
-        visible: PropTypes.bool,
-        position: PropTypes.number,
-        animation: PropTypes.bool,
-        shadow: PropTypes.bool,
-        backgroundColor: PropTypes.string,
-        opacity: PropTypes.number,
-        shadowColor: PropTypes.string,
-        textColor: PropTypes.string,
-        textStyle: Text.propTypes.style,
-        delay: PropTypes.number,
-        hideOnPress: PropTypes.bool,
-        onHide: PropTypes.func,
-        onHidden: PropTypes.func,
-        onShow: PropTypes.func,
-        onShown: PropTypes.func
-    };
+  
 
     static defaultProps = {
         visible: false,

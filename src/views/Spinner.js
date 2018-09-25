@@ -55,14 +55,6 @@ export default class Spinner extends React.Component {
     this.state = { visible: this.props.visible, textContent: this.props.textContent };
   }
 
-  static propTypes = {
-    visible: React.PropTypes.bool,
-    textContent: React.PropTypes.string,
-    color: React.PropTypes.string,
-    size: React.PropTypes.oneOf(SIZES),
-    overlayColor: React.PropTypes.string
-  };
-
   static defaultProps = {
     visible: false,
     textContent: "",

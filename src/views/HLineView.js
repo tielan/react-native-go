@@ -1,15 +1,11 @@
 
-import React, { PropTypes } from 'react';
+import React from 'react';
 import {
     View,
     StyleSheet
 } from 'react-native';
 
-const propTypes = {
-    height: PropTypes.number,
-    width: PropTypes.number,
-    bgColor: PropTypes.string,
-};
+
 
 class HLineView extends React.Component {
     render() {

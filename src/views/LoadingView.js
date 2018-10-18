@@ -6,9 +6,7 @@ import {
   StyleSheet,
   View
 } from 'react-native';
-const propTypes = {
-  containerStyle: View.propTypes.style,
-};
+
 const LoadingView = () => (
   <View style={styles.loading}>
     <ActivityIndicator
@@ -17,7 +15,6 @@ const LoadingView = () => (
     />
   </View>
 );
-LoadingView.propTypes = propTypes;
 
 const styles = StyleSheet.create({
   loading: {
